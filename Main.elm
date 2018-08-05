@@ -1,12 +1,12 @@
 module Main exposing (..)
 
+import Decoders exposing (..)
 import Dom exposing (Error, focus)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick, onInput)
 import Http exposing (get, send)
-import Json.Decode exposing (..)
-import Json.Decode.Pipeline as Pipeline exposing (decode, optional, required)
+import Models exposing (..)
 import Task exposing (attempt)
 
 
@@ -23,22 +23,16 @@ main =
 -- MODEL
 
 
-type alias Post =
-    { id : Maybe Int
-    , content : String
-    }
-
-
 type alias Model =
-    { posts : List Post
-    , newPost : Post
+    { posts : List Models.Post
+    , newPost : Models.Post
     , getPostsMessage : Maybe String
     }
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( Model [] (Post Nothing "") Nothing, Cmd.none )
+    ( Model [] (Models.Post Nothing "") Nothing, Cmd.none )
 
 
 
@@ -46,11 +40,11 @@ init =
 
 
 type Msg
-    = AddPost Post
+    = AddPost Models.Post
     | AddingPost String
     | FocusResult (Result Dom.Error ())
     | GetPosts
-    | PostsResult (Result Http.Error (List Post))
+    | PostsResult (Result Http.Error (List Models.Post))
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -59,14 +53,14 @@ update msg model =
         AddPost newPost ->
             ( { model
                 | posts = model.posts ++ [ newPost ]
-                , newPost = Post Nothing ""
+                , newPost = Models.Post Nothing ""
               }
             , Dom.focus "new-post" |> Task.attempt FocusResult
             )
 
         AddingPost newPost ->
             ( { model
-                | newPost = Post Nothing newPost
+                | newPost = Models.Post Nothing newPost
               }
             , Cmd.none
             )
@@ -93,7 +87,7 @@ update msg model =
             let
                 cmd =
                     Http.send PostsResult <|
-                        Http.get "http://localhost:8080/posts/" decodePosts
+                        Http.get "http://localhost:8080/posts/" Decoders.decodePosts
             in
             ( model, cmd )
 
@@ -127,19 +121,3 @@ listPosts model =
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.none
-
-
-
--- HTTP
-
-
-decodePost : Json.Decode.Decoder Post
-decodePost =
-    Pipeline.decode Post
-        |> Pipeline.optional "id" (nullable int) Nothing
-        |> Pipeline.required "content" string
-
-
-decodePosts : Json.Decode.Decoder (List Post)
-decodePosts =
-    Json.Decode.list decodePost
