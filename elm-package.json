@@ -1,7 +1,7 @@
 {
     "version": "1.0.0",
-    "summary": "helpful summary of your project, less than 80 characters",
-    "repository": "https://github.com/user/project.git",
+    "summary": "A journaling application",
+    "repository": "https://github.com/mikemedina/journal-front-end.git",
     "license": "BSD3",
     "source-directories": [
         "."
@@ -12,7 +12,8 @@
         "elm-lang/core": "5.1.1 <= v < 6.0.0",
         "elm-lang/dom": "1.1.1 <= v < 2.0.0",
         "elm-lang/html": "2.0.0 <= v < 3.0.0",
-        "elm-lang/http": "1.0.0 <= v < 2.0.0"
+        "elm-lang/http": "1.0.0 <= v < 2.0.0",
+        "rundis/elm-bootstrap": "4.1.0 <= v < 5.0.0"
     },
     "elm-version": "0.18.0 <= v < 0.19.0"
 }

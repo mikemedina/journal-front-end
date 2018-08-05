@@ -1,5 +1,7 @@
 module Main exposing (..)
 
+import Bootstrap.CDN as CDN
+import Bootstrap.Grid as Grid
 import Decoders exposing (..)
 import Dom exposing (Error, focus)
 import Html exposing (..)
@@ -98,12 +100,17 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    div []
-        [ textarea [ id "new-post", Html.Attributes.value model.newPost.content, onInput AddingPost ] []
-        , button [ onClick (AddPost model.newPost) ] [ text "Submit" ]
-        , ul [] (listPosts model)
-        , button [ onClick GetPosts ] [ text "Load Posts" ]
-        , div [] [ text (Maybe.withDefault "" model.getPostsMessage) ]
+    Grid.container []
+        [ CDN.stylesheet
+        , Grid.row []
+            [ Grid.col []
+                [ textarea [ id "new-post", Html.Attributes.value model.newPost.content, onInput AddingPost ] []
+                , button [ onClick (AddPost model.newPost) ] [ text "Submit" ]
+                , ul [] (listPosts model)
+                , button [ onClick GetPosts ] [ text "Load Posts" ]
+                , div [] [ text (Maybe.withDefault "" model.getPostsMessage) ]
+                ]
+            ]
         ]
 
 
