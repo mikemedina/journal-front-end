@@ -44,7 +44,7 @@ type Msg
     | AddingPost String
     | FocusResult (Result Dom.Error ())
     | GetPosts
-    | PostsResult (Result Http.Error (List Models.Post))
+    | PostsResult (Result Http.Error Models.Hateoas)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -73,10 +73,10 @@ update msg model =
                 Ok () ->
                     ( model, Cmd.none )
 
-        PostsResult (Ok posts) ->
+        PostsResult (Ok hateoas) ->
             let
                 uniquePosts =
-                    List.filter (\post -> not (List.member post.id (List.map (\post -> post.id) model.posts))) posts
+                    List.filter (\post -> not (List.member post.id (List.map (\post -> post.id) model.posts))) hateoas.embedded.posts
             in
             ( { model | posts = model.posts ++ uniquePosts }, Cmd.none )
 
@@ -87,7 +87,7 @@ update msg model =
             let
                 cmd =
                     Http.send PostsResult <|
-                        Http.get "http://localhost:8080/posts/" Decoders.decodePosts
+                        Http.get "http://localhost:8080/posts/" Decoders.hateoas
             in
             ( model, cmd )
 

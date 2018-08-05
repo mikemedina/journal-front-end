@@ -1,6 +1,10 @@
 module Models exposing (..)
 
 
+type alias Embedded =
+    { posts : List Post }
+
+
 type alias Post =
     { id : Maybe Int
     , content : String
@@ -8,8 +12,13 @@ type alias Post =
 
 
 type alias Link =
-    { href : String
-    , template : Bool
+    { href : String }
+
+
+type alias Links =
+    { self : Link
+    , post : Maybe Link
+    , profile : Maybe Link
     }
 
 
@@ -21,9 +30,9 @@ type alias Page =
     }
 
 
-type alias Hateoas a =
-    { embedded : List a
-    , links : List Link
+type alias Hateoas =
+    { embedded : Embedded
+    , links : Links
     , page : Page
     }
 
