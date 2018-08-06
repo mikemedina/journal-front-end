@@ -1,6 +1,6 @@
 # Journal
 
-Run with []().
+Run with [journal-back-end](https://github.com/mikemedina/journal-back-end).
 
 ## Run
 
