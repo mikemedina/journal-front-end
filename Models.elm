@@ -1,6 +1,13 @@
 module Models exposing (..)
 
 
+type alias Model =
+    { posts : List Post
+    , newPost : Post
+    , getPostsMessage : Maybe String
+    }
+
+
 type alias Embedded =
     { posts : List Post }
 
