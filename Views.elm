@@ -10,7 +10,8 @@ import Models exposing (Model)
 view : Model -> Html Messages.Msg
 view model =
     div [ class "content" ]
-        [ newPostForm model
+        [ h1 [] [ text "Journal" ]
+        , newPostForm model
         , postsList model
         , loadPostsButton
         , loadedPostsStatusMessage model
@@ -27,7 +28,7 @@ newPostForm model =
 
 newPostTextArea : Model -> Html Messages.Msg
 newPostTextArea model =
-    textarea [ id "new-post", Html.Attributes.value model.newPost.content, onInput Messages.AddingPost ] []
+    textarea [ id "new-post", rows 5, Html.Attributes.value model.newPost.content, onInput Messages.AddingPost ] []
 
 
 newPostButtons : Model -> Html Messages.Msg
