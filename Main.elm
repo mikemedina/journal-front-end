@@ -3,7 +3,6 @@ module Main exposing (..)
 import Decoders exposing (..)
 import Dom exposing (Error, focus)
 import Html exposing (program)
-import Html.Events exposing (onClick, onInput)
 import Http exposing (get, send)
 import Messages exposing (..)
 import Models exposing (..)
@@ -11,6 +10,7 @@ import Task exposing (attempt)
 import Views exposing (view)
 
 
+main : Program Never Model Msg
 main =
     Html.program
         { init = init
