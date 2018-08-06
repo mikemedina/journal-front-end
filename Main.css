@@ -1,0 +1,29 @@
+body {
+  background-color: #DDD;
+}
+
+.content {
+  width: 600px;
+  margin: auto;
+}
+
+.posts > *,
+.content > * {
+  margin-top: .2rem;
+}
+
+.card {
+  padding: .2rem;
+  background-color: #FCFCFC;
+  box-shadow: 1px 2px #888888;
+}
+
+.my-form {
+  flex-direction: column;
+  display: flex;
+}
+
+.my-form > div {
+  padding-top: 1rem;
+  text-align: right;
+}
