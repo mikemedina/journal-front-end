@@ -4,7 +4,9 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick, onInput)
 import Messages exposing (..)
-import Models exposing (Model)
+import Models exposing (Model, Post)
+import Date exposing (Date)
+import Date.Format exposing (format)
 
 
 view : Model -> Html Messages.Msg
@@ -21,9 +23,9 @@ view model =
 newPostForm : Model -> Html Messages.Msg
 newPostForm model =
     div [ class "my-form card" ]
-    [ newPostTextArea model
-    , newPostButtons model
-    ]
+        [ newPostTextArea model
+        , newPostButtons model
+        ]
 
 
 newPostTextArea : Model -> Html Messages.Msg
@@ -33,7 +35,7 @@ newPostTextArea model =
 
 newPostButtons : Model -> Html Messages.Msg
 newPostButtons model =
-    div [] [button [ class "btn btn-primary", onClick (AddPost model.newPost) ] [ text "Submit" ] ]
+    div [] [ button [ class "btn btn-primary", onClick (AddPost model.newPost) ] [ text "Submit" ] ]
 
 
 postsList : Model -> Html Messages.Msg
@@ -55,4 +57,26 @@ listPosts : Model -> List (Html msg)
 listPosts model =
     model.posts
         |> List.filter (\post -> not (String.isEmpty post.content))
-        |> List.map (\post -> div [ class "card" ] [ text post.content ])
+        |> List.map journalPost
+
+
+journalPost : Post -> Html msg
+journalPost post =
+    div [ class "card" ]
+        [ text post.content
+        , hr [] []
+        , div [ class "post-info" ]
+            [ span [ class "post-author" ] [ text (Maybe.withDefault "anonymous" post.author) ]
+            , span [ class "post-date" ] [ text (prettyDate post.date) ]
+            ]
+        ]
+
+
+prettyDate : Maybe Date -> String
+prettyDate date =
+    case date of
+        Just date ->
+            format "%B %e, %Y" date
+
+        Nothing ->
+            "Febtober 51th, 2088"

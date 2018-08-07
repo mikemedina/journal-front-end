@@ -27,7 +27,7 @@ main =
 
 init : ( Model, Cmd Messages.Msg )
 init =
-    ( Model [] (Models.Post Nothing "" (Just "") Nothing) Nothing Nothing, Task.perform Messages.ReceiveDate Date.now )
+    ( Model [] (Models.Post Nothing "" Nothing Nothing) Nothing Nothing, Task.perform Messages.ReceiveDate Date.now )
 
 
 
