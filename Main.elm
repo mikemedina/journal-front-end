@@ -75,7 +75,14 @@ update msg model =
                     Http.send PostsResult <|
                         Http.get "http://localhost:8080/posts/" Decoders.hateoas
             in
-            ( model, cmd )
+                ( model, cmd )
+
+        Messages.ReceiveDate date ->
+            let
+                nextModel =
+                    { model | date = Just date }
+            in
+                ( nextModel, Cmd.none )
 
 
 

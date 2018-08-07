@@ -1,10 +1,12 @@
 module Models exposing (..)
 
+import Date exposing (Date)
 
 type alias Model =
     { posts : List Post
     , newPost : Post
     , getPostsMessage : Maybe String
+    , date : Maybe Date
     }
 
 
