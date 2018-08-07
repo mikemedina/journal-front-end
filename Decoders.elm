@@ -2,6 +2,7 @@ module Decoders exposing (hateoas, post, posts)
 
 import Json.Decode exposing (..)
 import Json.Decode.Pipeline as Pipeline exposing (decode, optional, required)
+import Json.Decode.Extra exposing (date)
 import Models exposing (Post)
 
 
@@ -24,6 +25,8 @@ post =
     Pipeline.decode Models.Post
         |> Pipeline.optional "id" (maybe int) Nothing
         |> Pipeline.required "content" string
+        |> Pipeline.optional "author" (maybe string) Nothing
+        |> Pipeline.optional "date" (maybe date) Nothing
 
 
 posts : Decoder (List Models.Post)

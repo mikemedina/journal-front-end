@@ -6,8 +6,9 @@ import Html exposing (program)
 import Http exposing (get, send)
 import Messages exposing (..)
 import Models exposing (..)
-import Task exposing (attempt)
+import Task exposing (..)
 import Views exposing (view)
+import Date exposing (..)
 
 
 main : Program Never Model Msg
@@ -26,7 +27,7 @@ main =
 
 init : ( Model, Cmd Messages.Msg )
 init =
-    ( Model [] (Models.Post Nothing "") Nothing, Cmd.none )
+    ( Model [] (Models.Post Nothing "" (Just "") Nothing) Nothing Nothing, Task.perform Messages.ReceiveDate Date.now )
 
 
 
@@ -39,14 +40,14 @@ update msg model =
         Messages.AddPost newPost ->
             ( { model
                 | posts = model.posts ++ [ newPost ]
-                , newPost = Models.Post Nothing ""
+                , newPost = Models.Post Nothing "" Nothing Nothing
               }
             , Dom.focus "new-post" |> Task.attempt FocusResult
             )
 
         Messages.AddingPost newPost ->
             ( { model
-                | newPost = Models.Post Nothing newPost
+                | newPost = Models.Post Nothing newPost Nothing model.date
               }
             , Cmd.none
             )
@@ -64,7 +65,7 @@ update msg model =
                 uniquePosts =
                     List.filter (\post -> not (List.member post.id (List.map (\post -> post.id) model.posts))) hateoas.embedded.posts
             in
-            ( { model | posts = model.posts ++ uniquePosts }, Cmd.none )
+                ( { model | posts = model.posts ++ uniquePosts }, Cmd.none )
 
         Messages.PostsResult (Err err) ->
             ( { model | getPostsMessage = Just <| toString err }, Cmd.none )

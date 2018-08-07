@@ -17,6 +17,8 @@ type alias Embedded =
 type alias Post =
     { id : Maybe Int
     , content : String
+    , author : Maybe String
+    , date : Maybe Date
     }
 
 
