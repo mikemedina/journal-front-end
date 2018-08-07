@@ -1,4 +1,4 @@
-module Decoders exposing (hateoas, post, posts)
+module Marshallers exposing (hateoas, post, posts)
 
 import Json.Decode exposing (..)
 import Json.Decode.Pipeline as Pipeline exposing (decode, optional, required)
