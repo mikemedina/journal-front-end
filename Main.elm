@@ -4,6 +4,7 @@ import Dom exposing (Error, focus)
 import Html exposing (program)
 import Http exposing (get, send)
 import Json.Encode exposing (Value, object, string)
+import Keyboard
 import Marshallers exposing (..)
 import Messages exposing (..)
 import Models exposing (..)
@@ -84,6 +85,15 @@ update msg model =
         Messages.PostCreated result ->
             ( model, Cmd.none )
 
+        KeyPressed 13 ->
+            {- TODO: Check that either the input or the submit button is focused
+               Preliminary research suggests this requires using ports to talk to JS
+            -}
+            ( model, createPostCommand model.newPost )
+
+        KeyPressed keyCode ->
+            ( model, Cmd.none )
+
 
 createPostCommand : Models.Post -> Cmd Msg
 createPostCommand post =
@@ -124,5 +134,5 @@ newPostEncoder post =
 
 
 subscriptions : Model -> Sub Messages.Msg
-subscriptions model =
-    Sub.none
+subscriptions _ =
+    Keyboard.presses KeyPressed
