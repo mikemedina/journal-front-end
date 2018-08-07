@@ -1,9 +1,10 @@
 module Main exposing (..)
 
-import Decoders exposing (..)
 import Dom exposing (Error, focus)
 import Html exposing (program)
 import Http exposing (get, send)
+import Json.Encode exposing (Value, object, string)
+import Marshallers exposing (..)
 import Messages exposing (..)
 import Models exposing (..)
 import Task exposing (attempt)
@@ -72,10 +73,50 @@ update msg model =
         Messages.GetPosts ->
             let
                 cmd =
-                    Http.send PostsResult <|
-                        Http.get "http://localhost:8080/posts/" Decoders.hateoas
+                    Http.get "http://localhost:8080/posts/" Marshallers.hateoas
+                        |> Http.send PostsResult
             in
             ( model, cmd )
+
+        Messages.SubmitPost post ->
+            ( model, createPostCommand post )
+
+        Messages.PostCreated result ->
+            ( model, Cmd.none )
+
+
+createPostCommand : Models.Post -> Cmd Msg
+createPostCommand post =
+    createPostRequest post
+        |> Http.send Messages.PostCreated
+
+
+createPostRequest : Models.Post -> Http.Request Models.Post
+createPostRequest post =
+    Http.request
+        { method = "POST"
+        , headers = []
+        , url = "http://localhost:8080/posts"
+        , body = Http.jsonBody (newPostEncoder post)
+        , expect = Http.expectJson Marshallers.post
+        , timeout = Nothing
+        , withCredentials = False
+        }
+
+
+newPostEncoder : Models.Post -> Json.Encode.Value
+newPostEncoder post =
+    case post.id of
+        Just id ->
+            Json.Encode.object
+                [ ( "id", Json.Encode.int id )
+                , ( "content", Json.Encode.string post.content )
+                ]
+
+        Nothing ->
+            Json.Encode.object
+                [ ( "content", Json.Encode.string post.content )
+                ]
 
 
 

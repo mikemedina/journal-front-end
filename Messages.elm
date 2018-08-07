@@ -11,3 +11,5 @@ type Msg
     | FocusResult (Result Dom.Error ())
     | GetPosts
     | PostsResult (Result Http.Error Models.Hateoas)
+    | SubmitPost Models.Post
+    | PostCreated (Result Http.Error Models.Post)

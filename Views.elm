@@ -21,9 +21,9 @@ view model =
 newPostForm : Model -> Html Messages.Msg
 newPostForm model =
     div [ class "my-form card" ]
-    [ newPostTextArea model
-    , newPostButtons model
-    ]
+        [ newPostTextArea model
+        , newPostButtons model
+        ]
 
 
 newPostTextArea : Model -> Html Messages.Msg
@@ -33,7 +33,7 @@ newPostTextArea model =
 
 newPostButtons : Model -> Html Messages.Msg
 newPostButtons model =
-    div [] [button [ class "btn btn-primary", onClick (AddPost model.newPost) ] [ text "Submit" ] ]
+    div [] [ button [ class "btn btn-primary", onClick (SubmitPost model.newPost) ] [ text "Submit" ] ]
 
 
 postsList : Model -> Html Messages.Msg

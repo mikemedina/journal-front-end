@@ -42,28 +42,3 @@ type alias Hateoas =
     , links : Links
     , page : Page
     }
-
-
-
-{-
-   {
-     "_embedded" : {
-       "posts" : [ ]
-     },
-     "_links" : {
-       "self" : {
-         "href" : "http://localhost:8080/posts{?page,size,sort}",
-         "templated" : true
-       },
-       "profile" : {
-         "href" : "http://localhost:8080/profile/posts"
-       }
-     },
-     "page" : {
-       "size" : 20,
-       "totalElements" : 0,
-       "totalPages" : 0,
-       "number" : 0
-     }
-   }
--}
